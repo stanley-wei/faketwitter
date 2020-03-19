@@ -1,0 +1,225 @@
+body {
+  background-color: #FFFFFF
+}
+
+table {
+  border-collapse: collapse;
+  width: 568px;
+  padding: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: #FFFFFF;
+  margin-left: 25px;
+  margin-top:10px;
+}
+
+p, b, th, td, i {
+  font-family: "Lato";
+  font-size: 16px;
+}
+
+tr {
+  width: 90vw;
+  border-top: 0px solid white;
+  border-left: 0px solid white;
+  border-right: 0px solid white;
+  border-bottom: 2px solid #EEEEEE;
+}
+
+p {
+  padding: 2.5px;
+}
+
+b {
+  padding: 7px;
+}
+
+.tweet {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+}
+.pub_date {
+  color: #909090;
+  font-size: 12px;
+  margin-top: 5px;
+  padding-left: 3.5px;
+  position: relative;
+  top: -1px;
+}
+
+.user_handle {
+  color: #909090;
+  font-size: 14px;
+  margin-top: 5px;
+  padding-left: 0px;
+  position: relative;
+  top: -1px;
+}
+
+.profilepicture {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  margin: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-left: 20px;
+  padding-top: 0px;
+  margin-right: 0px;
+  top: 10px;
+}
+
+.topprofilepicture {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-left: -20px;
+  padding-top: 0px;
+  padding-left: 50px;
+  margin-right: 0px;
+  top: 10px;
+}
+
+.twitterlogo {
+  width: 40px;
+}
+
+.tweet_text {
+  margin-left: 5px;
+  padding: 7px;
+  margin-top: -10px;
+  padding-top: 0px;
+}
+
+.tweet_body {
+  position: relative;
+  width: 510px;
+  top: -3px;
+  left: 60px;
+}
+
+.user_tag {
+  padding: 7px;
+  padding-top: 0px;
+  padding-left: 0px;
+  margin-left: 1px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.profile_user_handle {
+  position: relative;
+  font-weight: normal;
+  font-size: 15px;
+  top: -87px;
+  left: 92.5px;
+  padding-left: 50px;
+  margin-left: 0px;
+  width: 200px;
+  text-align: left;
+  margin-right: 0px;
+  padding-right: 0px;
+}
+
+.profile_user_tag {
+  padding: 7px;
+  padding-top: 0px;
+  padding-left: 50px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -14px;
+  left: -60px;
+}
+
+.profile_user_bio {
+  padding: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+  margin: 0px;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -103px;
+  left: 145px;
+  width: 450px;
+  height: 48px;
+  line-height: 1.4;
+}
+
+.profile_user_follow {
+  padding: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+  margin: 0px;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -110px;
+  left: 145px;
+  width: 450px;
+  height: 48px;
+  font-family: 'Lato'
+}
+
+.link:hover {
+  color: #55ADEE;
+}
+
+.textlink {
+  color: #000000;
+}
+
+.textlink:hover {
+  text-decoration: underline;
+}
+
+.tweet_container {
+  background-color: #FFFFFF;
+}
+
+.tweet_container:hover {
+  background-color: #EEEEEE;
+}
+
+.replieslink {
+  color: #000000;
+  text-decoration: none;
+}
+
+.nounderline {
+  text-decoration: none !important;
+}
+
+.navbar-small {
+  border-bottom: 1px solid black;
+  height: 40px;
+}
+
+.underline_on_hover {
+  text-decoration: : none;
+}
+
+.underline_on_hover:hover {
+  text-decoration: underline;
+}
+
+.bluehoverbutton {
+  color: #55ADEE;
+  background-color: #FFFFFF;
+}
+
+.bluehoverbutton:hover {
+  background-color: #55ADEE
+}
+
+.navbox {
+  padding: 20px;
+}

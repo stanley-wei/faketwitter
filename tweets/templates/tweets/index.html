@@ -1,0 +1,119 @@
+{% load static %}
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel = "icon" href = "{% static 'resources/twitterbird.png' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Lato:400,700' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <title>Not Twitter</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light navbar-small" style = "border-bottom: 1px solid #999999; padding-top: 0px; padding-bottom: 0px;">
+    <a class="navbar-brand" href="{% url 'tweets:index' %}" style = "margin-left: 326px;"><img src = "{% static 'resources/twitterbird.png' %}" style = "height: 29px; margin: 0px; padding: 0px;"/></a>
+    <a href = "{% url 'tweets:index' %}" class = "link">
+      <i class="fa fa-home textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+        <span style = "font-family: 'Lato'; font-size: 20px;">  Home</span>
+      </i>
+    </a>
+    {% if logged_In_User is None %}
+      <a href = "{% url 'tweets:signup' %}">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 355px;" class = 'link textlink'>Sign Up</span>
+      </a>
+      <a href = '{% url "tweets:login" %}'>
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 10px;" class = 'link textlink'>Login</span>
+      </a>
+    {% else %}
+      <a href = "{% url 'tweets:yourfeed' %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-inbox textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Feed</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:user' logged_In_User.user_handle %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-comment textlink link" style = "font-size: 20px; margin-left: 15px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Tweets</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:logout' %}" style = "margin-top: -2px;">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 155px;" class = 'link textlink'>Logout</span>
+      </a>
+    {% endif %}
+  </nav>
+
+  <div class = "container" style = "margin-top: 15px; margin-left: 350px;">
+    {% if tweets %}
+        <table>
+          <tr style = "border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: 1px solid black;">
+            {% if logged_In_User is not None %}
+              <th style = "font-weight: bold; padding: 10px; font-size: 20px; padding-bottom: 5px;">Home (<a href = "{% url 'tweets:user' logged_In_User.user_handle %}" style = "color: black;">@{{logged_In_User.user_handle}}</a>)</th>
+            {% else %}
+              <th style = "font-weight: bold; padding: 10px; font-size: 20px; padding-bottom: 5px;">Home</th>
+            {% endif %}
+          </tr>
+        {% for tweet in tweets %}
+            <tr class = "tweet_container">
+              <td>
+                <a href = "{% url 'tweets:user' tweet.poster.user_handle %}" style = "color: #000000">
+                  {% if tweet.poster.profile_picture %}
+                    <img src = "{{tweet.poster.profile_picture.url}}" class = "profilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+                  {% else %}
+                    <img src = "{% static 'resources/vladimir.png' %}" class = "profilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+                  {% endif %}
+                  {% if logged_In_User == tweet.poster %}
+                    <i class = "fa fa-user" style = "margin-left: 10px; margin-right: 0px; color: #55ADEE;">
+                      <span class = "user_tag tweet_text underline_on_hover" style = "font-weight: bold; width: 525px; padding-right: 2px; margin-left: 0px;">You</span>
+                    </i>
+                  {% else %}
+                    <span class = "user_tag tweet_text underline_on_hover" style = "font-weight: bold; width: 525px; padding-right: 2px;">{{ tweet.poster }}</span>
+                  {% endif %}
+                  <span class = "user_handle">@{{tweet.poster.user_handle}}</span>
+                </a>
+                <a href = "{% url 'tweets:replies' tweet.poster.user_handle tweet.id %}" class = "replieslink nounderline">
+                  <span class = "pub_date">{{tweet.pub_date}}</span>
+                  <p class = "tweet tweet_text tweet_body replieslink">{{ tweet.tweet_text }}</p>
+                </a>
+                {% if logged_In_User is not None and tweet.id in liked_tweets %}
+                  <a href = "{% url 'tweets:unliketweetindex' tweet.id %}">
+                    <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none; color: red;">
+                      <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                    </i>
+                  </a>
+                {% elif logged_In_User is not None %}
+                  <a href = "{% url 'tweets:liketweetindex' tweet.id %}">
+                    <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none;">
+                      <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                    </i>
+                  </a>
+                {% else %}
+                    <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none;">
+                      <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                    </i>
+                {% endif %}
+                <a href = "{% url 'tweets:replies' tweet.poster.user_handle tweet.id %}" class = "replieslink nounderline">
+                  <i class="fa fa-comments textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 7.5px; text-decoration: none;">
+                    <span style = "font-family: 'Lato;'">{{ tweet.reply_set.count }}</span>
+                  </i>
+                </a>
+              </td>
+            </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+        <p style = "margin-left: 32px;">No tweets are available.</p>
+    {% endif %}
+    {% if logged_In_User is not None %}
+      <a href = "{% url 'tweets:tweet' %}">
+        <button class = "btn" style = "color: #FFFFFF; background-color: #55ADEE; position: fixed; top: 91px; left: 1000px;">+ Add Tweet</button>
+      </a>
+    {% endif %}
+    <img src = "{% static bloombergAd %}" style = "position: fixed; top: 150px; left: 1000px; width: 400px;"/>
+    <img src = "{% static bloombergAdTwo %}" style = "position: fixed; top: 400px; left: 1000px; width: 400px;"/>
+  </div>
+</body>
+</html>

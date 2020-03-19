@@ -1,0 +1,66 @@
+{% load static %}
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel = "icon" href = "{% static 'resources/twitterbird.png' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Lato:400,700' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <title>Not Twitter</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light navbar-small" style = "border-bottom: 1px solid #999999; padding-top: 0px; padding-bottom: 0px;">
+    <a class="navbar-brand" href="{% url 'tweets:index' %}" style = "margin-left: 326px;"><img src = "{% static 'resources/twitterbird.png' %}" style = "height: 29px; margin: 0px; padding: 0px;"/></a>
+    <a href = "{% url 'tweets:index' %}" class = "link">
+      <i class="fa fa-home textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+        <span style = "font-family: 'Lato'; font-size: 20px;">  Home</span>
+      </i>
+    </a>
+    {% if logged_In_User is None %}
+      <a href = "{% url 'tweets:signup' %}">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 355px;" class = 'link textlink'>Sign Up</span>
+      </a>
+      <a href = '{% url "tweets:login" %}'>
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 10px;" class = 'link textlink'>Login</span>
+      </a>
+    {% else %}
+      <a href = "{% url 'tweets:yourfeed' %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-inbox textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Feed</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:user' logged_In_User.user_handle %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-comment textlink link" style = "font-size: 20px; margin-left: 15px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Tweets</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:logout' %}" style = "margin-top: -2px;">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 155px;" class = 'link textlink'>Logout</span>
+      </a>
+    {% endif %}
+  </nav>
+
+  {% if signed_Up == 'False' %}
+  <div class = "container" style = "margin-left: 30px; padding-top: 15px; padding-left: 525px; width: 820px;">
+      <form action="{% url 'tweets:signingup' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form }}
+          {% if has_Failed == 'True' %}
+            <p style = 'color:red;'>Sorry, username is taken. Please try a different one.</p>
+          {% endif %}
+          <input type="submit" value="Submit">
+      </form>
+    </div>
+  {% else %}
+    <div class = "container" style = "margin-left: 30px; padding-top: 15px; padding-left: 525px;">
+      <p>Thanks for signing up, {{user_name}}!</p>
+    </div>
+  {% endif %}
+</body>
+</html>

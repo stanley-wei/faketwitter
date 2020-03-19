@@ -1,0 +1,167 @@
+{% load static %}
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel = "icon" href = "{% static 'resources/twitterbird.png' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/userpage.css' %}">
+  <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Lato:400,700' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script defer type="text/javascript" src="{% static 'js/userpage.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  {% if user_exists == 'True' %}
+      <title>{{user_name}} (@{{user_handle}})</title>
+  {% else %}
+      <title>@user_handle</title>
+  {% endif %}
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light navbar-small" style = "border-bottom: 1px solid #999999; padding-top: 0px; padding-bottom: 0px;">
+    <a class="navbar-brand" href="{% url 'tweets:index' %}" style = "margin-left: 326px;"><img src = "{% static 'resources/twitterbird.png' %}" style = "height: 29px; margin: 0px; padding: 0px;"/></a>
+    <a href = "{% url 'tweets:index' %}" class = "link">
+      <i class="fa fa-home textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+        <span style = "font-family: 'Lato'; font-size: 20px;">  Home</span>
+      </i>
+    </a>
+    {% if logged_In_User is None %}
+      <a href = "{% url 'tweets:signup' %}">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 355px;" class = 'link textlink'>Sign Up</span>
+      </a>
+      <a href = '{% url "tweets:login" %}'>
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 10px;" class = 'link textlink'>Login</span>
+      </a>
+    {% else %}
+      <a href = "{% url 'tweets:yourfeed' %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-inbox textlink link" style = "font-size: 20px; margin-left: 10px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Feed</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:user' logged_In_User.user_handle %}" style = "margin-top: -1px; font-weight: none;">
+        <i class="fa fa-comment textlink link" style = "font-size: 20px; margin-left: 15px; margin-top: -1px;">
+          <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 0px;" class = 'link textlink'>Your Tweets</span>
+        </i>
+      </a>
+      <a href = "{% url 'tweets:logout' %}" style = "margin-top: -2px;">
+        <span style = "font-family: 'Lato'; font-size: 20px; margin-left: 155px;" class = 'link textlink'>Logout</span>
+      </a>
+    {% endif %}
+  </nav>
+
+  <div class = "container" style = "margin-top: 15px; margin-left: 350px;">
+      {% if user_exists == 'True' %}
+        {% if user.profile_picture %}
+          <img src = "{{user.profile_picture.url}}" class = "topprofilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+        {% else %}
+          <img src = "{% static 'resources/vladimir.png' %}" class = "topprofilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+        {% endif %}
+        <b class = "profile_user_tag" style = "font-weight: bold; width: 525px;">{{ user.user_name }}</b>
+        <p class = "profile_user_handle">@{{user_handle}}</p>
+        <p class = "profile_user_bio">{{user.user_bio}}</p>
+        <span class = "profile_user_follow">{{user.users_followed}} Followed</span>
+        <span class = "profile_user_follow" style = "left: 170px;">{{user.users_following}} Following</span>
+
+        <table style = 'position: relative; top: -105px;'>
+          <tr style = "border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: 1px solid black;">
+            {% if logged_In_User.user_handle == user_handle %}
+              <th style = "font-weight: bold; padding: 10px; font-size: 20px; padding-bottom: 5px; padding-top: 0px;">Your Tweets (<a href = "{% url 'tweets:user' logged_In_User.user_handle %}" style = "color: black;">@{{logged_In_User.user_handle}}</a>)</th>
+            {% else %}
+              <th style = "position: relative; font-weight: bold; padding: 10px; font-size: 20px; margin-top: -20px; padding-bottom: 5px; padding-top: 0px;">{{user_name}}'s Tweets</th>
+            {% endif %}
+          </tr>
+
+          {% if has_Tweets == 'True' %}
+          {% for tweet in tweets %}
+            {% if tweet.poster.user_handle == user_handle %}
+              <tr class = "tweet_container">
+                <td>
+                  <a href = "{% url 'tweets:user' tweet.poster.user_handle %}" style = "color: #000000">
+                    {% if tweet.poster.profile_picture %}
+                      <img src = "{{tweet.poster.profile_picture.url}}" class = "profilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+                    {% else %}
+                      <img src = "{% static 'resources/vladimir.png' %}" class = "profilepicture nounderline" style = "color: #FFFFFF; text-decoration: none;"/>
+                    {% endif %}                    {% if tweet.poster.user_handle == logged_In_User.user_handle %}
+                      <i class = "fa fa-user" style = "margin-left: 10px; margin-right: 0px; color: #55ADEE;">
+                        <span class = "user_tag tweet_text underline_on_hover" style = "font-weight: bold; width: 525px; padding-right: 2px; margin-left: -7.5px;">You</span>
+                      </i>
+                    {% else %}
+                      <span class = "user_tag tweet_text underline_on_hover" style = "font-weight: bold; width: 525px; padding-right: 2px; margin-left: 5px;">{{user_name}}</span>
+                    {% endif %}
+                    <span class = "user_handle">@{{tweet.poster.user_handle}}</span>
+                  </a>
+                  <a href = "{% url 'tweets:replies' tweet.poster.user_handle tweet.id %}" class = "replieslink nounderline">
+                    <span class = "pub_date">{{tweet.pub_date}}</span>
+                    <p class = "tweet tweet_text tweet_body replieslink">{{ tweet.tweet_text }}</p>
+                  </a>
+                  {% if logged_In_User is not None and tweet.id in liked_tweets %}
+                    <a href = "{% url 'tweets:unliketweetuser' user_handle tweet.id %}">
+                      <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none; color: red;">
+                        <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                      </i>
+                    </a>
+                  {% elif logged_In_User is not None %}
+                    <a href = "{% url 'tweets:liketweetuser' user_handle tweet.id %}">
+                      <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none;">
+                        <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                      </i>
+                    </a>
+                  {% else %}
+                      <i class="fa fa-heart textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 5px; text-decoration: none;">
+                        <span style = "font-family: 'Lato;'">{{ tweet.likes }}</span>
+                      </i>
+                  {% endif %}
+                  <a href = "{% url 'tweets:replies' tweet.poster.user_handle tweet.id %}" class = "replieslink nounderline">
+                    <i class="fa fa-comments textlink link" style = "font-size: 18px; margin-left: 29.5px; margin-top: -0.5px; margin-bottom: 7.5px; text-decoration: none;">
+                      <span style = "font-family: 'Lato;'">{{ tweet.reply_set.count }}</span>
+                    </i>
+                  </a>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+          {% else %}
+          <tr class = "tweet_container">
+            <td>
+              {% if logged_In_User is not None and logged_In_User.user_name == user_name %}
+                <p style = "margin-left: 0px; width: 560px; margin-top: 5px; margin-bottom: 10px; text-align: center;">You have not posted any tweets.</p>
+              {% else %}
+                <p style = "margin-left: 0px; width: 560px; margin-top: 5px; margin-bottom: 10px; text-align: center;">{{user_name}} has no tweets.</p>
+              {% endif %}
+            </td>
+          </tr>
+          {% endif %}
+      </table>
+      <a href = "{% url 'tweets:tweet' %}">
+        <button class = "btn" style = "color: #FFFFFF; background-color: #55ADEE; position: fixed; top: 91px; left: 1000px;">+ Add Tweet</button>
+      </a>
+      <img src = "{% static bloombergAd %}" style = "position: fixed; top: 150px; left: 1000px; width: 400px;"/>
+      <img src = "{% static bloombergAdTwo %}" style = "position: fixed; top: 400px; left: 1000px; width: 400px;"/>
+      {% if logged_In_User is not None and logged_In_User.user_handle != user_handle and user_exists == 'True' %}
+          {% if followed == 'False' %}
+          <a href = "{% url 'tweets:followuser' user_handle user_id %}">
+            <button class = "btn" style = "text-align: center; color: #FFFFFF; background-color: #55ADEE; position: fixed; top: 91px; left: 1150px; width: 113px;">Follow User</button>
+          </a>
+          {% else %}
+          <a href = "{% url 'tweets:unfollowuser' user_handle user_id %}">
+            <button class = "btn" style = "color: #55ADEE; background-color: #FFFFFF; border: 1px solid #55ADEE; position: fixed; top: 91px; left: 1150px; width: 113px; text-align: center;">Unfollow</button>
+          </a>
+          {% endif %}
+      {% endif %}
+      {% else %}
+        <table>
+          <tr style = "border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: 1px solid black;">
+            <th style = "font-weight: bold; padding: 10px; font-size: 20px; padding-bottom: 5px;">@{{user_handle}}</th>
+          </tr>
+          <tr>
+            <td style = "padding-top: 10px; text-align: center; width: 560px;">
+              <b style = "margin-left: 0px; margin-bottom: 10px;">This account does not exist.</b>
+              <p style = "margin-left: 0px; margin-top: 5px;">Try searching for another.</p>
+            </td>
+          </tr>
+      {% endif %}
+    </div>
+</body>
+</html>
