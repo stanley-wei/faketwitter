@@ -5,6 +5,7 @@ class SignUpForm(forms.Form):
     profile_picture = forms.ImageField(label='Profile Picture')
     user_handle = forms.CharField(label='Username', max_length=15)
     password = forms.CharField(label='Password',max_length=128)
+    user_bio = forms.CharField(label='User Bio', max_length=160, widget=forms.Textarea, required=False)
 
 class LoginForm(forms.Form):
     user_handle = forms.CharField(label='Username', max_length=15)
@@ -15,3 +16,10 @@ class TweetForm(forms.Form):
 
 class ReplyForm(forms.Form):
     reply_text = forms.CharField(label='Reply content', max_length=280, widget=forms.Textarea)
+
+class UpdateUserInfoForm(forms.Form):
+    user_name = forms.CharField(label='Name', max_length=25)
+    profile_picture = forms.ImageField(label='Profile Picture')
+    user_handle = forms.CharField(label='Username', max_length=15)
+    password = forms.CharField(label='Password',max_length=128)
+    user_bio = forms.CharField(label='User Bio', max_length=160, widget=forms.Textarea, required=False)

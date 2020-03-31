@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, reverse
 
 from . import views
 
@@ -21,6 +21,9 @@ urlpatterns = [
 
     path('signup/', views.SignUpView, name='signup'),
     path('signingup/', views.SigningUpView, name='signingup'),
+
+    path('updateuser/', views.UpdateUserView, name='updateuser'),
+    path('userupdated', views.UpdatedUserView, name='updateduser'),
 
     path('loggingin/', views.LoggingInView, name="loggingin"),
     path('login/', views.LoginView, name='login'),

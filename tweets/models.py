@@ -9,19 +9,21 @@ from django.core.files import File
 from django.conf import settings
 
 class Profile(models.Model):
-    class Meta:
-        permissions = [('can_post', 'can_delete_self_posts')]
     user_acc = models.OneToOneField(User, on_delete=models.CASCADE)
+
     user_handle = models.CharField(max_length=15)
     user_name = models.CharField(max_length=25, default="PH")
     user_bio = models.CharField(max_length=160, default="", blank = True)
     password = models.CharField(max_length=128, default="")
+    profile_picture = models.ImageField(upload_to='profile_pictures/')
+
     acc_create_date = models.DateTimeField('date created', default = timezone.now)
+
     followed_users = models.CharField(max_length = 1000, default = "", blank = True)
     users_followed = models.IntegerField(default = 0)
     users_following = models.IntegerField(default = 0)
     liked_tweets = models.CharField(max_length = 1000, default = "", blank = True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/')
+
     def __str__(self):
         return self.user_name
 

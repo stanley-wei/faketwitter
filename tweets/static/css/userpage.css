@@ -169,6 +169,22 @@ b {
   font-family: 'Lato'
 }
 
+.change_profile {
+  color: #000000;
+  padding: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+  margin: 0px;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -110px;
+  left: 195px;
+  width: 450px;
+  height: 48px;
+}
+
 .link:hover {
   color: #55ADEE;
 }
